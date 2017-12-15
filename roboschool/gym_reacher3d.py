@@ -26,9 +26,8 @@ class RoboschoolReacher3d3(RoboschoolMujocoXmlEnv):
         self.jdict["target_y"].reset_current_position(
             self.np_random.uniform(low=-self.TARG_LIMIT, high=self.TARG_LIMIT), 0)
         self.jdict["target_z"].reset_current_position(
-            self.np_random.uniform(low=0, high=self.TARG_LIMIT - .1), 0)
-        #self.jdict["target_x"].reset_current_position(.2, 0)
-        #self.jdict["target_y"].reset_current_position(.2, 0)
+            self.np_random.uniform(low=0, high=.05), 0)
+
         self.fingertip = self.parts["fingertip"]
         self.target = self.parts["target"]
 
@@ -36,14 +35,14 @@ class RoboschoolReacher3d3(RoboschoolMujocoXmlEnv):
         for i in range(self._DOF):
             self.joints.append(self.jdict["joint{}".format(i)])
             self.joints[i].reset_current_position(
-                self.np_random.uniform(low=-3.0, high=3.0), 0)
+                self.np_random.uniform(low=-1.5, high=1.5), 0)
         self.theta, self.theta_dot = [None] * self._DOF, [None] * self._DOF
 
     def apply_action(self, a):
         assert(np.isfinite(a).all())
         for i in range(len(self.joints)):
             self.joints[i].set_motor_torque(
-                0.05 * float(np.clip(a[i], -1, +1)))
+                0.1 * float(np.clip(a[i], -1, +1)))
 
     def calc_state(self):
         target_x, _ = self.jdict["target_x"].current_position()
@@ -51,8 +50,6 @@ class RoboschoolReacher3d3(RoboschoolMujocoXmlEnv):
         target_z, _ = self.jdict["target_z"].current_position()
         self.to_target_vec = np.array(
             self.fingertip.pose().xyz()) - np.array(self.target.pose().xyz())
-        #print(target_x, target_y)
-        # return
 
         state = np.array([
             target_x,
@@ -67,11 +64,11 @@ class RoboschoolReacher3d3(RoboschoolMujocoXmlEnv):
             state = np.append(state, [np.cos(self.theta[i]), np.sin(
                 self.theta[i]), self.theta_dot[i]])
 
-        # total of state is 18
+        # total of state is 15
         return state
 
     def calc_potential(self):
-        return -50 * np.linalg.norm(self.to_target_vec)
+        return -100 * np.linalg.norm(self.to_target_vec)
 
     def _step(self, a):
         assert(not self.scene.multiplayer)
@@ -83,14 +80,12 @@ class RoboschoolReacher3d3(RoboschoolMujocoXmlEnv):
         potential_old = self.potential
         self.potential = self.calc_potential()
 
-        # electricity_cost = (
-        #    -0.10*(np.abs(a[0]*self.theta_dot) + np.abs(a[1]*self.gamma_dot))  # work torque*angular_velocity
-        #    -0.01*(np.abs(a[0]) + np.abs(a[1]))                                # stall torque require some energy
-        #)
         work = 0.0
         stall = 0.0
         for i in range(len(self.joints)):
+            # work torque*angular_velocity
             work += np.abs(a[i] * self.theta_dot[i])
+            # stall torque require some energy
             stall += np.abs(a[i])
         electricity_cost = (
             -.10 * work
@@ -99,9 +94,9 @@ class RoboschoolReacher3d3(RoboschoolMujocoXmlEnv):
 
         stuck_joint_cost = []
         for theta in self.theta:
-            stuck_joint_cost.append(-0.01 if np.abs(np.abs(theta) - 1) < 0.01
-                                    else 0.0)
-        #self.rewards = [float(self.potential - potential_old), float(electricity_cost), float(stuck_joint_cost)]
+            stuck_joint_cost.append(
+                -0.01 if np.abs(np.abs(theta) - 1) < 0.01 else 0.0)
+
         self.rewards = [float(self.potential - potential_old),
                         float(electricity_cost), sum(stuck_joint_cost)]
         self.frame += 1
