@@ -54,6 +54,9 @@ The list of Roboschool environments is as follows:
 - RoboschoolHumanoidFlagrun-v0
 - RoboschoolHumanoidFlagrunHarder-v0
 - RoboschoolPong-v0
+- # New
+    - RoboschoolReacher3d3-v1
+    - RoboschoolReacher2d7-v1
 
 To obtain this list: `import roboschool, gym; print("\n".join(['- ' + spec.id for spec in gym.envs.registry.all() if spec.id.startswith('Roboschool')]))`.
 
@@ -152,4 +155,12 @@ To see three agents in a race:
 
 ```bash
 python $ROBOSCHOOL_PATH/agent_zoo/demo_race2.py
+```
+
+Example
+=========
+Using TRPO/PPO from pat-coady's [repository](https://github.com/pat-coady/trpo)
+
+```bash
+./trpo/src/train.py RoboschoolReacher3d3-v1 -n 100000 -b 50
 ```
