@@ -35,8 +35,15 @@ register(
 register(
     id='RoboschoolReacher7d-v1',
     entry_point='roboschool:RoboschoolReacher7d',
-    max_episode_steps=150,
-    reward_threshold=18.0,
+    max_episode_steps=200,
+    reward_threshold=50.0,
+    tags={"pg_complexity": 1 * 1000000},
+)
+register(
+    id='RoboschoolReacher3d-v1',
+    entry_point='roboschool:RoboschoolReacher3d',
+    max_episode_steps=200,
+    reward_threshold=50.0,
     tags={"pg_complexity": 1 * 1000000},
 )
 
@@ -116,6 +123,7 @@ from roboschool.gym_pendulums import RoboschoolInvertedPendulumSwingup
 from roboschool.gym_pendulums import RoboschoolInvertedDoublePendulum
 from roboschool.gym_reacher import RoboschoolReacher
 from roboschool.gym_reacher7d import RoboschoolReacher7d
+from roboschool.gym_reacher3d import RoboschoolReacher3d
 from roboschool.gym_mujoco_walkers import RoboschoolHopper
 from roboschool.gym_mujoco_walkers import RoboschoolWalker2d
 from roboschool.gym_mujoco_walkers import RoboschoolHalfCheetah
