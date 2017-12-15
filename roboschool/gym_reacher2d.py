@@ -9,13 +9,13 @@ import os
 import sys
 
 
-class RoboschoolReacher7d(RoboschoolMujocoXmlEnv):
+class RoboschoolReacher2d7(RoboschoolMujocoXmlEnv):
     _DOF = 7
     TARG_LIMIT = 0.28
 
     def __init__(self):
         RoboschoolMujocoXmlEnv.__init__(
-            self, 'reacher7d.xml', 'body0', action_dim=self._DOF, obs_dim=(4 + self._DOF * 2))
+            self, 'reacher2d7.xml', 'body0', action_dim=self._DOF, obs_dim=(4 + self._DOF * 2))
 
     def create_single_player_scene(self):
         return SingleRobotEmptyScene(gravity=0.0, timestep=0.0165, frame_skip=1)
