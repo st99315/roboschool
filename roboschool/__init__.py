@@ -31,21 +31,29 @@ register(
     tags={"pg_complexity": 1 * 1000000},
 )
 
-""" Important! """
+# New Environment
 register(
     id='RoboschoolReacher2d7-v1',
     entry_point='roboschool:RoboschoolReacher2d7',
     max_episode_steps=200,
-    reward_threshold=50.0,
+    reward_threshold=20.0,
     tags={"pg_complexity": 1 * 1000000},
 )
 register(
     id='RoboschoolReacher3d3-v1',
     entry_point='roboschool:RoboschoolReacher3d3',
     max_episode_steps=200,
-    reward_threshold=50.0,
+    reward_threshold=20.0,
     tags={"pg_complexity": 1 * 1000000},
 )
+register(
+    id='RoboschoolReacher3d7-v1',
+    entry_point='roboschool:RoboschoolReacher3d7',
+    max_episode_steps=200,
+    reward_threshold=20.0,
+    tags={"pg_complexity": 1 * 1000000},
+)
+####################################################
 
 register(
     id='RoboschoolHopper-v1',
@@ -125,6 +133,7 @@ from roboschool.gym_pendulums import RoboschoolInvertedDoublePendulum
 from roboschool.gym_reacher import RoboschoolReacher
 from roboschool.gym_reacher2d import RoboschoolReacher2d7
 from roboschool.gym_reacher3d import RoboschoolReacher3d3
+from roboschool.gym_reacher3d import RoboschoolReacher3d7
 from roboschool.gym_mujoco_walkers import RoboschoolHopper
 from roboschool.gym_mujoco_walkers import RoboschoolWalker2d
 from roboschool.gym_mujoco_walkers import RoboschoolHalfCheetah

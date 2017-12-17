@@ -11,11 +11,12 @@ import sys
 
 class RoboschoolReacher3d3(RoboschoolMujocoXmlEnv):
     _DOF = 3
+    _ROBOT_DESCRIPTION = 'reacher3d3.xml'
     TARG_LIMIT = 0.16
 
     def __init__(self):
         RoboschoolMujocoXmlEnv.__init__(
-            self, 'reacher3d3.xml', 'body0', action_dim=self._DOF, obs_dim=(6 + self._DOF * 3))
+            self, self._ROBOT_DESCRIPTION, 'body0', action_dim=self._DOF, obs_dim=(6 + self._DOF * 3))
 
     def create_single_player_scene(self):
         return SingleRobotEmptyScene(gravity=0.0, timestep=0.0165, frame_skip=1)
@@ -110,3 +111,12 @@ class RoboschoolReacher3d3(RoboschoolMujocoXmlEnv):
         x *= 0.5
         y *= 0.5
         self.camera.move_and_look_at(0.3, 0.3, 0.3, x, y, z)
+
+
+class RoboschoolReacher3d7(RoboschoolReacher3d3):
+    _DOF = 7
+    _ROBOT_DESCRIPTION = 'reacher3d7.xml'
+    TARG_LIMIT = 0.2
+
+    def __init__(self):
+        super().__init__()
