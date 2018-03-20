@@ -1,3 +1,4 @@
+from OpenGL import GL
 from gym.envs.registration import register
 #from gym.scoreboard.registration import add_task, add_group
 
@@ -42,14 +43,21 @@ register(
 register(
     id='RoboschoolReacher3d3-v1',
     entry_point='roboschool:RoboschoolReacher3d3',
-    max_episode_steps=200,
-    reward_threshold=20.0,
+    max_episode_steps=300,
+    reward_threshold=30.0,
     tags={"pg_complexity": 1 * 1000000},
 )
 register(
     id='RoboschoolReacher3d7-v1',
     entry_point='roboschool:RoboschoolReacher3d7',
-    max_episode_steps=200,
+    max_episode_steps=300,
+    reward_threshold=20.0,
+    tags={"pg_complexity": 1 * 1000000},
+)
+register(
+    id='RoboschoolReacher3d6-v1',
+    entry_point='roboschool:RoboschoolReacher3d6',
+    max_episode_steps=300,
     reward_threshold=20.0,
     tags={"pg_complexity": 1 * 1000000},
 )
@@ -134,6 +142,7 @@ from roboschool.gym_reacher import RoboschoolReacher
 from roboschool.gym_reacher2d import RoboschoolReacher2d7
 from roboschool.gym_reacher3d import RoboschoolReacher3d3
 from roboschool.gym_reacher3d import RoboschoolReacher3d7
+from roboschool.gym_reacher3d import RoboschoolReacher3d6
 from roboschool.gym_mujoco_walkers import RoboschoolHopper
 from roboschool.gym_mujoco_walkers import RoboschoolWalker2d
 from roboschool.gym_mujoco_walkers import RoboschoolHalfCheetah
